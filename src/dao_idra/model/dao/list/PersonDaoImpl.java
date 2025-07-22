@@ -12,12 +12,13 @@ Implementación de PersonDao para trabajar con listas porque es lo más simple
 TO-DO: implementar métodos faltantes. Pensar cuáles son las causas que lanzarían DaoException
 */
 public class PersonDaoImpl implements PersonDao {
-    //Atributo estático como variable global
+    //contador global para asignar IDs únicos a las personas. Cada vez que se guarda una persona nueva, se incrementa.
     protected static long nextId = 1;
     
     //Lista de gente que simula el almacén de datos
     protected List<Person> gente;
 
+    //Inicializa la lista vacia cuando se crea la instancia del DAO
     public PersonDaoImpl() {
         this.gente = new ArrayList();
     }
@@ -29,21 +30,21 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public void save(Person data) throws DaoException {
-        if (data.getId() != 0) {
+        if (data.getId() != 0) { 
             throw new DaoException("Ya estaba guardada");
         }
-        data.setId(nextId++);
-        this.gente.add(data);
+        data.setId(nextId++); //Asigna un nuevo ID 
+        this.gente.add(data); //Agrega la persona a la lista
     }
 
     @Override
     public void update(Person data) throws DaoException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override
     public void delete(Person data) throws DaoException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
