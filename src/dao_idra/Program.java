@@ -6,9 +6,29 @@ import dao_idra.model.dao.list.PersonDaoImpl; //A futuro se pueden cambiar la im
 import dao_idra.utils.DaoException;
 
 public class Program {
-
+    private static final System.Logger logger = System.getLogger(Program.class.getName());
+    
+    //Metodo helper para mostrar errores tanto en logger como en consola (para aprendizaje)
+    
+    private static void logError(String message, DaoException ex){
+        //Logger profesional 
+        logger.log(System.Logger.Level.ERROR, message, ex); //<-- Rojo
+        
+        //Tambien en consola para que veas el resultado(No profesional)
+        //System.err.println("ERROR: " + message + " - " + ex.getMessage());
+    }
+    
+    private static void logInfo(String message) {
+        logger.log(System.Logger.Level.INFO, message); //<-- Gris
+        
+        //(No profesional)
+        //System.out.println("INFO: "+ message); // <-- Negro normal
+    }
     public static void main(String[] args) {
+        
+        //Quien hace las operaciones (dao.save(), dao.getAll(), dao.getById())
         PersonDao dao = new PersonDaoImpl(); //Se instancia contra una interfaz específica
+        
         Person p = new Person();
 
         p.setFirstName("Esteban");
@@ -16,33 +36,32 @@ public class Program {
         p.setDni(22334455L);
 
         try {
-            System.out.println("Guardar");
-            //System.out.println(p);
+            logInfo("Guardar");
             dao.save(p);
+            
             p = new Person();
             p.setFirstName("Laura");
             p.setLastName("Lerena");
             p.setDni(66554433L);
             dao.save(p);
-            //System.out.println(p);
-            System.out.println("Listar");
+            
+            logInfo("Listar");
             for (Person q : dao.getAll()) {
                 System.out.println(q);
             }
         } catch (DaoException ex) {
-            System.getLogger(Program.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            logError("Error al guardar/listar personas", ex);
         }
         
         try {
-            System.out.println("Buscamos gente");
+            logInfo("Buscamos gente");
             System.out.println(dao.getById(1));
             System.out.println(dao.getById(10));
             System.out.println(dao.getById(0));
         } catch (DaoException ex) {
-            System.getLogger(Program.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            logError("Error en busqueda", ex);
         }
         
-        System.out.println("Programa terminado con exito");
+        logInfo("Programa terminado con exito");
     }
-
 }
